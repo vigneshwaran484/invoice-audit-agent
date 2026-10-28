@@ -3,11 +3,19 @@
 from __future__ import annotations
 
 import re
+import subprocess
+import sys
+from pathlib import Path
 
 import pytest
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 
 from audit_agent.graph import ClaimNarrative
+
+# data/out/ is git-ignored; build it on a fresh clone before test modules load it.
+_DATA = Path(__file__).resolve().parent.parent / "data"
+if not (_DATA / "out" / "ground_truth.json").exists():
+    subprocess.run([sys.executable, str(_DATA / "generate.py")], check=True, capture_output=True)
 
 
 class _Structured:
