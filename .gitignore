@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+*.sqlite
+*.db
+data/out/
+evals/runs/
+
+# private prep notes
+PREP_NOTES.md

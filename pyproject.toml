@@ -1,0 +1,43 @@
+[project]
+name = "invoice-audit-agent"
+version = "0.1.0"
+description = "LangGraph + MCP agent that audits supplier invoices against contract terms and drafts recovery claims, with tracing and evals."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2",
+]
+
+[project.optional-dependencies]
+# Added day by day during the sprint (see README). Install with: uv sync --extra agent
+agent = [
+    "langgraph",
+    "langgraph-checkpoint-sqlite",
+    "langchain-core",
+    "langchain-ollama",        # local models via Ollama (you already run it for Jarvis)
+    "langchain-groq",          # or a hosted model; pick one in config
+    "mcp",                     # official MCP Python SDK (FastMCP)
+    "langchain-mcp-adapters",
+    "langfuse",
+    "fastapi",
+    "uvicorn",
+    "deepagents",
+]
+
+[dependency-groups]
+dev = ["pytest", "httpx"]
+
+[project.scripts]
+audit-agent = "audit_agent.cli:main"
+audit-mcp = "audit_agent.mcp_server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/audit_agent"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
